@@ -1,0 +1,7 @@
+[project]
+org-name = "ballets"
+version = "0.0.1"
+license = "Apache-2.0"
+authors = ["rajkumar"]
+repository = "https://github.com/ballets/bitmex-connector"
+keywords = ["ballerina", "ballets", "bitmex", "connector"]

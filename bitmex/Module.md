@@ -1,26 +1,16 @@
-# Ballerina BitMex Connector
+Connects to BitMex from Ballerina. 
 
-The BitMex connector allows you to interact with BitMex through the BitMex Bot API. You can use it to develop BitMex Bots.
+# Module Overview
+
+The BitMex connector allows you to interact with BitMex through the BitMex REST API. You can use it to develop BitMex Bots.
 
 ## Compatibility
-| Ballerina Language Version | BitMex API version  |
-| -------------------------- | -------------------- |
-| 0.983.0                    | 4.1                  |
+|                    |    Version     |  
+|:------------------:|:--------------:|
+| Ballerina Language |   0.990.2      |
+| BitMex API         |   2.1          |
 
-
-The following sections provide you with information on how to use the Ballerina BitMex connector.
-
-- [Contribute To Develop](#contribute-to-develop)
-- [Example](#example)
-
-### Contribute To develop
-
-Clone the repository by running the following command 
-```shell
-git clone https://github.com/raj-rajaratnam/ballerina-bitmex.git
-```
-
-##### Example
+## Example
 
 ```ballerina
 import ballerina/io;
