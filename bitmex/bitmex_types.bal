@@ -1,3 +1,4 @@
+// User types
 public type User record {
     int? id;
     int? ownerId;
@@ -19,76 +20,88 @@ public type User record {
 };
 
 public type UserPreferences record {
-    boolean? alertOnLiquidations ;
-    boolean? animationsEnabled;
-    string? announcementsLastSeen;
-    int? chatChannelID;
-    string? colorTheme;
-    string? currency;
-    boolean? debug;
-    string[]? disableEmails;
-    string[]? disablePush;
-    string[]? hideConfirmDialogs;
-    boolean? hideConnectionModal;
-    boolean? hideFromLeaderboard;
-    boolean? hideNameFromLeaderboard;
-    string[]? hideNotifications;
-    string? locale;
-    string[]? msgsSeen;
-    string? orderBookType;
-    boolean? orderClearImmediate;
-    boolean? orderControlsPlusMinus;
-    boolean? showLocaleNumbers;
-    string[]? sounds;
-    boolean? strictIPCheck;
-    boolean? strictTimeout;
-    string? tickerGroup;
-    boolean? tickerPinned;
-    string? tradeLayout;
+    boolean? alertOnLiquidations?;
+    boolean? animationsEnabled?;
+    string? announcementsLastSeen?;
+    int? chatChannelID?;
+    string? colorTheme?;
+    string? currency?;
+    boolean? debug?;
+    string[]? disableEmails?;
+    string[]? disablePush?;
+    string[]? hideConfirmDialogs?;
+    boolean? hideConnectionModal?;
+    boolean? hideFromLeaderboard=false;
+    boolean? hideNameFromLeaderboard=true;
+    string[]? hideNotifications?;
+    string? locale="en-US";
+    string[]? msgsSeen?;
+    string? orderBookType?;
+    boolean? orderClearImmediate=false;
+    boolean? orderControlsPlusMinus?;
+    boolean? showLocaleNumbers=true;
+    string[]? sounds?;
+    boolean? strictIPCheck=false;
+    boolean? strictTimeout=true;
+    string? tickerGroup?;
+    boolean? tickerPinned?;
+    string? tradeLayout?;
 };
 
 public type Margin record {
-    int account;
+    int account = 0;
     string currency;
-    // int? riskLimit;
-    // string? prevState;
-    // string? state;
-    // string? action;
-    // int? amount;
-    // int? pendingCredit;
-    // int? pendingDebit;
-    // int? confirmedDebit;
-    // int? prevRealisedPnl;
-    // int? prevUnrealisedPnl;
-    // int? grossComm;
-    // int? grossOpenCost;
-    // int? grossOpenPremium;
-    // int? grossExecCost;
-    // int? grossMarkValue;
-    // int? riskValue;
-    // int? taxableMargin;
-    // int? initMargin;
-    // int? maintMargin;
-    // int? sessionMargin;
-    // int? targetExcessMargin;
-    // int? varMargin;
-    // int? realisedPnl;
-    // int? unrealisedPnl;
-    // int? indicativeTax;
-    // int? unrealisedProfit;
-    // int? syntheticMargin;
-    int? walletBalance;
-    int? marginBalance;
-    // int? marginBalancePcnt;
-    // int? marginLeverage;
-    int|float marginUsedPcnt;
-    // int? excessMargin;
-    // int? excessMarginPcnt;
-    int? availableMargin;
-    // int? withdrawableMargin;
-    // string? timestamp;
-    // int? grossLastValue;
-    // int? commission;
+    int? riskLimit?;
+    string? prevState?;
+    string? state?;
+    string? action?;
+    int? amount?;
+    int? pendingCredit?;
+    int? pendingDebit?;
+    int? confirmedDebit?;
+    int? prevRealisedPnl?;
+    int? prevUnrealisedPnl?;
+    int? grossComm?;
+    int? grossOpenCost?;
+    int? grossOpenPremium?;
+    int? grossExecCost?;
+    int? grossMarkValue?;
+    int? riskValue?;
+    int? taxableMargin?;
+    int? initMargin?;
+    int? maintMargin?;
+    int? sessionMargin?;
+    int? targetExcessMargin?;
+    int? varMargin?;
+    int? realisedPnl?;
+    int? unrealisedPnl?;
+    int? indicativeTax?;
+    int? unrealisedProfit?;
+    int? syntheticMargin?;
+    int? walletBalance?;
+    int? marginBalance?;
+    int|float? marginBalancePcnt?;
+    int|float? marginLeverage?;
+    int|float? marginUsedPcnt?;
+    int? excessMargin?;
+    int|float? excessMarginPcnt?;
+    int? availableMargin?;
+    int? withdrawableMargin?;
+    string? timestamp?;
+    int? grossLastValue?;
+    int|float? commission?;
+};
+
+// Order types
+public type GetOrderRequest record {
+    string symbol = "";
+    string filter = "";
+    string columns = "";
+    int count = 0;
+    int ^"start" = 0;
+    boolean reverse = false;
+    string startTime = "";
+    string endTime = "";
 };
 
 public type Order record {
@@ -149,4 +162,13 @@ public type Position record {
     float|int? liquidationPrice;
     boolean isOpen = false;
     float|int leverage = 0;
+};
+
+// Announcement types
+public type Announcement record {
+    int id;
+    string link;
+    string title;
+    string content;
+    string date;
 };
