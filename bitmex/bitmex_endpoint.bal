@@ -19,11 +19,6 @@ public type BitmexClient client object {
         self.orderClient = new(self.bitmexClient, self.apiKey, self.apiSecret);
     }
 
-    // public remote function createOrder(string symbol, string? side, float? price, int? quantity, 
-    //     string? orderType) returns Order|error;
-
-    // public remote function createOrders(Order[] orders) returns Order[]|error;
-
     // public remote function getOrderByClOrdID(string clOrdId) returns Order[]|error;
 
     // public remote function cancelAllOrders(string? symbol, string? filter, string? text) returns Order[]|error;
@@ -95,65 +90,6 @@ public type BitMexConfiguration record {
 //     }
 // }
 
-// public remote function BitmexClient.createOrder(string symbol, string? side, float? price, int? quantity, 
-//     string? orderType) returns (Order|error) {
-
-//     http:Client clientEndpoint = self.bitmexClient;
-//     string path = ORDER_BASE_PATH;
-//     string verb = POST;
-
-//     json payload = {"symbol":symbol};
-
-//     if (side is string) {
-//         payload.side = side;
-//     }
-
-//     if (price is float) {
-//         payload.price = price;
-//     }
-
-//     if (quantity is int) {
-//         payload.orderQty = quantity;
-//     }
-
-//     if (orderType is string) {
-//         payload.ordType = orderType;
-//     }
-
-//     http:Request request = new;
-//     request.setJsonPayload(payload, contentType = "application/json");
-
-//     constructRequestHeaders(request, verb, self.apiKey, self.apiSecret, path, payload.toString());
-
-//     io:println("Calling BitMex.createOrder()");
-
-//     var httpResponse = clientEndpoint->post(path, request);
-
-//     if (httpResponse is http:Response) {
-//         int statusCode = httpResponse.statusCode;
-//         var jsonPayload = httpResponse.getJsonPayload();
-//         if (jsonPayload is json) {
-//             if (statusCode == 200) {
-//                 Order|error ord  = Order.convert(jsonPayload);
-//                 if (ord is Order) {
-//                     return ord;
-//                 } else {
-//                     error err = error(BITMEX_ERROR_CODE, { message: "Unexpected response format from the REST API" });
-//                     return err;                
-//                 }
-//             } else {
-//                 return setResponseError(statusCode, jsonPayload);
-//             }           
-//         } else {
-//             error err = error(BITMEX_ERROR_CODE, { message: "Error occurred while accessing the JSON payload of the response" });
-//             return err;
-//         }
-//     } else {
-//         error err = error(BITMEX_ERROR_CODE, { message: "Error occurred while invoking the REST API" });
-//         return err;
-//     }
-// }
-
 // public remote function BitmexClient.updateOrder(string? orderID, string? origClOrdID, string? clOrdID, 
 //         float? orderQty, float? price, float? stopPx) returns (Order|error) {
 
@@ -203,58 +139,6 @@ public type BitMexConfiguration record {
 //             if (statusCode == 200) {
 //                 Order|error ord  = Order.convert(jsonPayload);
 //                 if (ord is Order) {
-//                     return ord;
-//                 } else {
-//                     error err = error(BITMEX_ERROR_CODE, { message: "Unexpected response format from the REST API" });
-//                     return err;                
-//                 }
-//             } else {
-//                 return setResponseError(statusCode, jsonPayload);
-//             }           
-//         } else {
-//             error err = error(BITMEX_ERROR_CODE, { message: "Error occurred while accessing the JSON payload of the response" });
-//             return err;
-//         }
-//     } else {
-//         error err = error(BITMEX_ERROR_CODE, { message: "Error occurred while invoking the REST API" });
-//         return err;
-//     }
-// }
-
-// public remote function BitmexClient.createOrders(Order[] orders) returns (Order[]|error) {
-
-//     http:Client clientEndpoint = self.bitmexClient;
-//     string path = ORDER_BULK_PATH;
-//     string verb = POST;
-
-//     json[] ordersJson = [];
-//     int i = 0;
-//     foreach Order ord in orders {
-//         json|error orderJson = json.convert(ord);
-//         if (orderJson is json) {
-//             ordersJson[i] = orderJson;
-//         }
-//         i = i + 1;
-//     }
-
-//     json payload = {"orders":ordersJson};
-
-//     http:Request request = new;
-//     request.setJsonPayload(payload, contentType = "application/json");
-
-//     constructRequestHeaders(request, verb, self.apiKey, self.apiSecret, path, payload.toString());
-
-//     io:println("Calling BitMex.createOrders()");
-
-//     var httpResponse = clientEndpoint->post(path, request);
-
-//     if (httpResponse is http:Response) {
-//         int statusCode = httpResponse.statusCode;
-//         var jsonPayload = httpResponse.getJsonPayload();
-//         if (jsonPayload is json) {
-//             if (statusCode == 200) {
-//                 Order[]|error ord  = Order[].convert(jsonPayload);
-//                 if (ord is Order[]) {
 //                     return ord;
 //                 } else {
 //                     error err = error(BITMEX_ERROR_CODE, { message: "Unexpected response format from the REST API" });

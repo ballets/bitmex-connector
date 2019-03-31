@@ -37,7 +37,6 @@ public remote function AnnouncementClient.announcement() returns Announcement[]|
     json|error jsonPayload = validateResponse(httpResponse, correlationId);
     if (jsonPayload is json) {
         Announcement[]|error announcement = Announcement[].convert(jsonPayload);
-        
         if (announcement is Announcement[]) {
             msg = string `[id: ${correlationId}]. announcement: ${io:sprintf("%s", announcement)}`;
             log:printDebug(msg);
