@@ -21,7 +21,7 @@ public type OrderClient client object {
 
     public remote function createOrders(Order[] orders) returns Order[]|error;
 
-    public remote function cancelOrders(string orderID = "", string clOrdID = "", 
+    public remote function cancelOrders(string[]? orderIds = (), string[]? clOrdIds = (), 
         string text = "") returns Order[]|error;
 
     public remote function cancelAllOrders(string symbol = "", string filter = "", 
@@ -196,7 +196,7 @@ public remote function OrderClient.createOrders(Order[] orders) returns Order[]|
     }
 }
 
-public remote function OrderClient.cancelOrders(string orderID = "", string clOrdID = "", 
+public remote function OrderClient.cancelOrders(string[]? orderIds = (), string[]? clOrdIds = (), 
         string text = "") returns Order[]|error {
 
     http:Client clientEndpoint = self.orderClient;
@@ -206,11 +206,11 @@ public remote function OrderClient.cancelOrders(string orderID = "", string clOr
     http:Request request = new;
 
     json payload = {};
-    if (orderID != "") {
-        payload.orderID = orderID;
+    if (orderIds != ()) {
+        payload.orderID = orderIds;
     }
-    if (clOrdID != "") {
-        payload.clOrdID = clOrdID;
+    if (clOrdIds != ()) {
+        payload.clOrdID = clOrdIds;
     }
     if (text != "") {
         payload.text = text;
