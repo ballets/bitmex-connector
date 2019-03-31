@@ -15,14 +15,17 @@ public type OrderClient client object {
         self.apiSecret = apiSecret;
     }
 
-    public remote function getOrder(GetOrderRequest getOrderRequest) returns Order[]|error;
+    public remote function getOrders(GetOrderRequest getOrderRequest) returns Order[]|error;
 
     public remote function createOrder(Order ordr) returns Order|error;
 
     public remote function createOrders(Order[] orders) returns Order[]|error;
+
+    public remote function cancelOrders(string orderID = "", string clOrdID = "", 
+        string text = "") returns Order[]|error;
 };
 
-public remote function OrderClient.getOrder(GetOrderRequest getOrderRequest) returns Order[]|error {
+public remote function OrderClient.getOrders(GetOrderRequest getOrderRequest) returns Order[]|error {
 
     http:Client clientEndpoint = self.orderClient;
     string path = ORDER_BASE_PATH;
@@ -169,6 +172,56 @@ public remote function OrderClient.createOrders(Order[] orders) returns Order[]|
     log:printInfo(msg);
 
     var httpResponse = clientEndpoint->post(path, request);
+
+    json|error jsonPayload = validateResponse(httpResponse, correlationId);
+    if (jsonPayload is json) {
+        Order[]|error ord  = Order[].convert(jsonPayload);
+        if (ord is Order[]) {
+            msg = string `[id: ${correlationId}]. order: ${io:sprintf("%s", ord)}`;
+            log:printDebug(msg);
+            return ord;
+        } else {
+            msg = string `[id: ${correlationId}]. orderError: ${<string> ord.detail().message}`;
+            log:printError(msg, err = ord);
+            error err = error(BITMEX_ERROR_CODE, { message: "Unexpected response format from the REST API" });
+            return err;                
+        }
+    } else {
+        return jsonPayload;
+    }
+}
+
+public remote function OrderClient.cancelOrders(string orderID = "", string clOrdID = "", 
+        string text = "") returns Order[]|error {
+
+    http:Client clientEndpoint = self.orderClient;
+    string path = ORDER_BASE_PATH;
+    string verb = DELETE;
+    string data = "";
+    http:Request request = new;
+
+    json payload = {};
+    if (orderID != "") {
+        payload.orderID = orderID;
+    }
+    if (clOrdID != "") {
+        payload.clOrdID = clOrdID;
+    }
+    if (text != "") {
+        payload.text = text;
+    }
+
+    data = payload.toString();
+    request.setJsonPayload(payload, contentType = "application/json");
+  
+    constructRequestHeaders(request, verb, self.apiKey, self.apiSecret, path, data);
+
+    string correlationId = system:uuid();
+
+    string msg = string `[id: ${correlationId}]. Calling ${verb} ${path}`;
+    log:printInfo(msg);
+
+    var httpResponse = clientEndpoint->delete(path, request);
 
     json|error jsonPayload = validateResponse(httpResponse, correlationId);
     if (jsonPayload is json) {
