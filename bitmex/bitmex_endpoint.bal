@@ -19,9 +19,6 @@ public type BitmexClient client object {
         self.orderClient = new(self.bitmexClient, self.apiKey, self.apiSecret);
     }
 
-    // public remote function updateOrder(string? orderID, string? origClOrdID, string? clOrdID, 
-    //     float? orderQty, float? price, float? stopPx) returns Order|error;
-
     // public remote function getPositions() returns Position[]|error;
 
     // public remote function setLeverage(string symbol, float leverage) returns error?;
@@ -71,73 +68,6 @@ public type BitMexConfiguration record {
 //         if (jsonPayload is json) {
 //             if (statusCode == 200) {
 //                 return;
-//             } else {
-//                 return setResponseError(statusCode, jsonPayload);
-//             }           
-//         } else {
-//             error err = error(BITMEX_ERROR_CODE, { message: "Error occurred while accessing the JSON payload of the response" });
-//             return err;
-//         }
-//     } else {
-//         error err = error(BITMEX_ERROR_CODE, { message: "Error occurred while invoking the REST API" });
-//         return err;
-//     }
-// }
-
-// public remote function BitmexClient.updateOrder(string? orderID, string? origClOrdID, string? clOrdID, 
-//         float? orderQty, float? price, float? stopPx) returns (Order|error) {
-
-//     http:Client clientEndpoint = self.bitmexClient;
-//     string path = ORDER_BASE_PATH;
-//     string verb = PUT;
-
-//     json payload = {};
-
-//     if (orderID is string) {
-//         payload.orderID = orderID;
-//     }
-
-//     if (origClOrdID is string) {
-//         payload.origClOrdID = origClOrdID;
-//     }
-
-//     if (clOrdID is string) {
-//         payload.clOrdID = clOrdID;
-//     }
-
-//     if (orderQty is float) {
-//         payload.orderQty = orderQty;
-//     }
-
-//     if (price is float) {
-//         payload.price = price;
-//     }
-
-//     if (stopPx is float) {
-//         payload.stopPx = stopPx;
-//     }
-
-//     http:Request request = new;
-//     request.setJsonPayload(payload, contentType = "application/json");
-
-//     constructRequestHeaders(request, verb, self.apiKey, self.apiSecret, path, payload.toString());
-
-//     io:println("Calling BitMex.updateOrder()");
-
-//     var httpResponse = clientEndpoint->put(path, request);
-
-//     if (httpResponse is http:Response) {
-//         int statusCode = httpResponse.statusCode;
-//         var jsonPayload = httpResponse.getJsonPayload();
-//         if (jsonPayload is json) {
-//             if (statusCode == 200) {
-//                 Order|error ord  = Order.convert(jsonPayload);
-//                 if (ord is Order) {
-//                     return ord;
-//                 } else {
-//                     error err = error(BITMEX_ERROR_CODE, { message: "Unexpected response format from the REST API" });
-//                     return err;                
-//                 }
 //             } else {
 //                 return setResponseError(statusCode, jsonPayload);
 //             }           
