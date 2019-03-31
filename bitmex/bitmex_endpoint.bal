@@ -8,6 +8,7 @@ public type BitmexClient client object {
     private UserClient userClient;
     private OrderClient orderClient;
     private PositionClient positionClient;
+    private TradeClient tradeClient;
     string apiKey;
     string apiSecret;
 
@@ -19,9 +20,8 @@ public type BitmexClient client object {
         self.userClient = new(self.bitmexClient, self.apiKey, self.apiSecret);
         self.orderClient = new(self.bitmexClient, self.apiKey, self.apiSecret);
         self.positionClient = new(self.bitmexClient, self.apiKey, self.apiSecret);
+        self.tradeClient = new(self.bitmexClient, self.apiKey, self.apiSecret);
     }
-
-    // public remote function getTrade(string symbol, int count, boolean reverse) returns Trade[]|error;    
 
     public function getAnnouncementClient() returns AnnouncementClient {
         return self.announcementClient;
@@ -38,6 +38,10 @@ public type BitmexClient client object {
     public function getPositionClient() returns PositionClient {
         return self.positionClient;
     }
+
+    public function getTradeClient() returns TradeClient {
+        return self.tradeClient;
+    }
 };
 
 public type BitMexConfiguration record {
@@ -46,45 +50,3 @@ public type BitMexConfiguration record {
     string apiSecret;
     http:ClientEndpointConfig clientConfig = {};
 };
-
-// public remote function BitmexClient.getTrade(string symbol, int count, boolean reverse) returns (Trade[]|error) {
-
-//     http:Client clientEndpoint = self.bitmexClient;
-//     string path = GET_TRADE_PATH + "?symbol=" + symbol + "&count=" + count + "&reverse=" + reverse;
-//     http:Request request = new;
-
-//     io:println("Calling BitMex.getTrade()");
-//     var httpResponse = clientEndpoint->get(path, message = request);
-//     if (httpResponse is http:Response) {
-//         int statusCode = httpResponse.statusCode;
-//         var jsonPayload = httpResponse.getJsonPayload();
-//         if (jsonPayload is json[]) {
-//             if (statusCode == 200) {
-//                 // int i = 0;
-//                 Trade[]|error trades = Trade[].convert(jsonPayload);
-//                 // foreach json j in jsonPayload {
-//                 //     io:println(j);
-//                 //     Trade|error trade = Trade.convert(j);
-//                 //     io:println(trade);
-//                 //     if (trade is Trade) {
-//                 //         trades[i] = trade;
-//                 //         i = i + 1;
-//                 //     } else {
-//                 //         error err = error(BITMEX_ERROR_CODE, { message: "Unexpected response format from the REST API" });
-//                 //         return err; 
-//                 //     }
-//                 //     io:println("inter past");
-//                 // }
-//                 return trades;
-//             } else {
-//                 return setResponseError(statusCode, jsonPayload);
-//             }          
-//         } else {
-//             error err = error(BITMEX_ERROR_CODE, { message: "Error occurred while accessing the JSON payload of the response" });
-//             return err;
-//         }
-//     } else {
-//         error err = error(BITMEX_ERROR_CODE, { message: "Error occurred while invoking the REST API" });
-//         return err;
-//     }
-// }
