@@ -7,6 +7,7 @@ public type BitmexClient client object {
     private AnnouncementClient announcementClient;
     private UserClient userClient;
     private OrderClient orderClient;
+    private PositionClient positionClient;
     string apiKey;
     string apiSecret;
 
@@ -17,11 +18,8 @@ public type BitmexClient client object {
         self.announcementClient = new(self.bitmexClient, self.apiKey, self.apiSecret);
         self.userClient = new(self.bitmexClient, self.apiKey, self.apiSecret);
         self.orderClient = new(self.bitmexClient, self.apiKey, self.apiSecret);
+        self.positionClient = new(self.bitmexClient, self.apiKey, self.apiSecret);
     }
-
-    // public remote function getPositions() returns Position[]|error;
-
-    // public remote function setLeverage(string symbol, float leverage) returns error?;
 
     // public remote function getTrade(string symbol, int count, boolean reverse) returns Trade[]|error;    
 
@@ -36,6 +34,10 @@ public type BitmexClient client object {
     public function getOrderClient() returns OrderClient {
         return self.orderClient;
     }
+
+    public function getPositionClient() returns PositionClient {
+        return self.positionClient;
+    }
 };
 
 public type BitMexConfiguration record {
@@ -44,81 +46,6 @@ public type BitMexConfiguration record {
     string apiSecret;
     http:ClientEndpointConfig clientConfig = {};
 };
-
-// public remote function BitmexClient.setLeverage(string symbol, float leverage) returns error? {
-
-//     http:Client clientEndpoint = self.bitmexClient;
-//     string path = SET_LEVERAGE_PATH;
-//     string verb = POST;
-
-//     json payload = {"symbol":symbol,"leverage":leverage};
-
-//     http:Request request = new;
-//     request.setJsonPayload(payload, contentType = "application/json");
-
-//     constructRequestHeaders(request, verb, self.apiKey, self.apiSecret, path, payload.toString());
-
-//     io:println("Calling BitMex.setLeverage()");
-
-//     var httpResponse = clientEndpoint->post(path, request);
-
-//     if (httpResponse is http:Response) {
-//         int statusCode = httpResponse.statusCode;
-//         var jsonPayload = httpResponse.getJsonPayload();
-//         if (jsonPayload is json) {
-//             if (statusCode == 200) {
-//                 return;
-//             } else {
-//                 return setResponseError(statusCode, jsonPayload);
-//             }           
-//         } else {
-//             error err = error(BITMEX_ERROR_CODE, { message: "Error occurred while accessing the JSON payload of the response" });
-//             return err;
-//         }
-//     } else {
-//         error err = error(BITMEX_ERROR_CODE, { message: "Error occurred while invoking the REST API" });
-//         return err;
-//     }
-// }
-
-// public remote function BitmexClient.getPositions() returns (Position[]|error) {
-
-//     http:Client clientEndpoint = self.bitmexClient;
-//     string path = GET_POSITION_PATH;
-//     string verb = GET;
-//     string data = "";
-//     http:Request request = new;
-    
-//     constructRequestHeaders(request, verb, self.apiKey, self.apiSecret, path, data);
-
-//     io:println("Calling BitMex.getPositions()");
-
-//     var httpResponse = clientEndpoint->get(path, message = request);
-
-//     if (httpResponse is http:Response) {
-//         int statusCode = httpResponse.statusCode;
-//         var jsonPayload = httpResponse.getJsonPayload();
-//         if (jsonPayload is json) {
-//             if (statusCode == 200) {
-//                 Position[]|error positions  = Position[].convert(jsonPayload);
-//                 if (positions is Position[]) {
-//                     return positions;
-//                 } else {
-//                     error err = error(BITMEX_ERROR_CODE, { message: "Unexpected response format from the REST API" });
-//                     return err;                
-//                 }
-//             } else {
-//                 return setResponseError(statusCode, jsonPayload);
-//             }           
-//         } else {
-//             error err = error(BITMEX_ERROR_CODE, { message: "Error occurred while accessing the JSON payload of the response" });
-//             return err;
-//         }
-//     } else {
-//         error err = error(BITMEX_ERROR_CODE, { message: "Error occurred while invoking the REST API" });
-//         return err;
-//     }
-// }
 
 // public remote function BitmexClient.getTrade(string symbol, int count, boolean reverse) returns (Trade[]|error) {
 
