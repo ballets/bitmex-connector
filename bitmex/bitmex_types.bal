@@ -106,6 +106,7 @@ public type GetOrderRequest record {
 
 public type Order record {
     string? orderID?;
+    string? origClOrdID?;
     string? clOrdID?;
     string? clOrdLinkID?;
     int? account?;
