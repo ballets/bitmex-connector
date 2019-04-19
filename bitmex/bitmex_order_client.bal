@@ -41,7 +41,8 @@ public remote function OrderClient.getOrders(GetOrderRequest getOrderRequest) re
     }
 
     if (getOrderRequest.filter != "") {
-        uriParams = string `${uriParams}&filter=${getOrderRequest.filter}`;
+        string encodedFilter = check http:encode(getOrderRequest.filter, "UTF-8");
+        uriParams = string `${uriParams}&filter=${encodedFilter}`;
     }
 
     if (getOrderRequest.columns != "") {

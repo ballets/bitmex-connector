@@ -173,3 +173,22 @@ public type Announcement record {
     string content;
     string date;
 };
+
+public type Event record {
+    string ^"table";
+    string action;
+    Data[] data;
+};
+
+public type Data record {
+    string timestamp;
+    string symbol;
+    string side;
+    float|int size;
+    float|int price;
+    string tickDirection;
+    string trdMatchID;
+    float|int grossValue;
+    float|int homeNotional;
+    float|int foreignNotional;
+};
