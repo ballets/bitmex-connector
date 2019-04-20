@@ -15,19 +15,39 @@ public type PositionClient client object {
         self.apiSecret = apiSecret;
     }
 
-    public remote function getPositions() returns Position[]|error;
+    public remote function getPositions(string? filter = (), string[]? columns = (), int? count = ()) returns Position[]|error;
 
     public remote function setLeverage(string symbol, float leverage) returns error?;
 };
 
-public remote function PositionClient.getPositions() returns Position[]|error {
+public remote function PositionClient.getPositions(string? filter = (), string[]? columns = (), int? count = ()) returns Position[]|error {
 
     http:Client clientEndpoint = self.positionClient;
     string path = GET_POSITION_PATH;
     string verb = GET;
     string data = "";
     http:Request request = new;
-    
+
+    string uriParams = "";
+
+    if (filter is string) {
+        string encodedFilter = check http:encode(filter, "UTF-8");
+        uriParams = string `${uriParams}&filter=${encodedFilter}`;    
+    }
+
+    if (columns is string[]) {
+        string encodedColumns = check http:encode(io:sprintf("%s", columns), "UTF-8");
+        uriParams = string `${uriParams}&columns=${encodedColumns}`;  
+    }
+
+    if (count is int) {
+        uriParams = string `${uriParams}&count=${count}`;  
+    }
+
+    if (uriParams != "") {
+        path = string `${path}?${uriParams.substring(1,uriParams.length())}`;
+    }
+
     constructRequestHeaders(request, verb, self.apiKey, self.apiSecret, path, data);
 
     string correlationId = system:uuid();
